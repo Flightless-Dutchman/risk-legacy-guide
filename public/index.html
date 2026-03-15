@@ -1950,32 +1950,28 @@
 
         // Highlight text
         function highlightText(text, query) {
-            if (!query) return text;
+            if (!query || !text) return text;
 
-            const lowerText = text.toLowerCase();
-            const lowerQuery = query.toLowerCase();
+            const escapeRegex = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-            // Try exact match first
-            const idx = lowerText.indexOf(lowerQuery);
-            if (idx !== -1) {
-                return text.substring(0, idx) +
-                    '<span class="search-highlight">' + text.substring(idx, idx + query.length) + '</span>' +
-                    text.substring(idx + query.length);
-            }
-
-            // Try word matches
-            const words = query.split(/\s+/).filter(w => w.length >= 2);
-            let result = text;
-            for (const word of words) {
-                const wordIdx = result.toLowerCase().indexOf(word.toLowerCase());
-                if (wordIdx !== -1) {
-                    result = result.substring(0, wordIdx) +
-                        '<span class="search-highlight">' + result.substring(wordIdx, wordIdx + word.length) + '</span>' +
-                        result.substring(wordIdx + word.length);
+            // Try exact phrase match first (all occurrences)
+            try {
+                const phraseRegex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+                if (phraseRegex.test(text)) {
+                    return text.replace(new RegExp(`(${escapeRegex(query)})`, 'gi'),
+                        '<span class="search-highlight">$1</span>');
                 }
-            }
+            } catch (e) {}
 
-            return result;
+            // Fall back to individual word matches (all occurrences)
+            const words = query.split(/\s+/).filter(w => w.length >= 2);
+            if (words.length === 0) return text;
+            try {
+                const wordRegex = new RegExp(`(${words.map(escapeRegex).join('|')})`, 'gi');
+                return text.replace(wordRegex, '<span class="search-highlight">$1</span>');
+            } catch (e) {
+                return text;
+            }
         }
 
         // Get excerpt around match
