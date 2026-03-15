@@ -1022,25 +1022,69 @@
                     </div>
                     <div class="card-body">
                         <div class="card-content">
+                            <div class="warning-box" style="border-left-color: #4a90d9; background: rgba(74, 144, 217, 0.1);">
+                                <div class="warning-box-title" style="color: #4a90d9;">📦 Draft System (Pack 1)</div>
+                                <p>The old dice-roll-and-pick system has been replaced by a <strong>draft card system</strong>. Lay out all draft cards and faction cards face-up before the game begins.</p>
+                            </div>
+
+                            <h4>The Four Draft Card Types</h4>
+                            <ul>
+                                <li><strong style="color: #7a9e4e;">Starting Troops</strong> — How many troops you place at game start</li>
+                                <li><strong style="color: #b07030;">Turn Order</strong> — When you take your turn each round</li>
+                                <li><strong style="color: #8060a0;">Starting Placement</strong> — When you place your HQ at game start</li>
+                                <li><strong style="color: #c8a000;">Starting Coin Cards</strong> — How many coin cards you begin with</li>
+                            </ul>
+
+                            <h4>Filter by Player Count</h4>
+                            <p>Only use draft cards marked with your player count or lower:</p>
+                            <ul>
+                                <li><strong>3 players:</strong> Use only cards marked "3"</li>
+                                <li><strong>4 players:</strong> Add the "4" marked cards</li>
+                                <li><strong>5 players:</strong> Add the "4" and "5" marked cards</li>
+                            </ul>
+
+                            <h4>The Draft</h4>
                             <div class="step">
                                 <span class="step-number">1</span>
-                                <span class="step-content">Lay out the Faction cards face up on the table</span>
+                                <span class="step-content">All players roll dice. Highest roll picks first</span>
                             </div>
                             <div class="step">
                                 <span class="step-number">2</span>
-                                <span class="step-content">Everyone rolls dice. Highest roll picks first</span>
+                                <span class="step-content">Starting clockwise from the high roller, each player picks a <strong>faction card</strong> OR <strong>one draft card</strong> of a type they don't already have</span>
                             </div>
                             <div class="step">
                                 <span class="step-number">3</span>
-                                <span class="step-content">First player chooses a faction AND takes that faction's troops and HQ</span>
+                                <span class="step-content">After everyone has picked once, <strong>reverse direction</strong> (now going counter-clockwise). This is a snake draft</span>
                             </div>
                             <div class="step">
                                 <span class="step-number">4</span>
-                                <span class="step-content">Place your HQ in a <strong>legal starting territory</strong>, then place 8 troops from your starting troops with it</span>
+                                <span class="step-content">Continue until every player has <strong>a faction + one of each draft card type</strong></span>
                             </div>
+
+                            <div class="warning-box">
+                                <div class="warning-box-title">One per type</div>
+                                <p>You cannot take a second card of the same type. If you already have a Turn Order card, you must pick a faction or a different card type.</p>
+                            </div>
+
+                            <span class="detail-toggle">4-Player Draft Order Example</span>
+                            <div class="more-detail">
+                                <p>In a 4-player game, the pick order repeats as:</p>
+                                <p><strong>P1 → P2 → P3 → P4 → P4 → P3 → P2 → P1</strong></p>
+                                <p>This sequence repeats until all players have a faction and one card of each type.</p>
+                            </div>
+
+                            <h4>Placing Troops & Starting the Game</h4>
                             <div class="step">
                                 <span class="step-number">5</span>
-                                <span class="step-content">Selection continues clockwise until everyone has a faction and starting position</span>
+                                <span class="step-content">In order of <strong>Starting Placement</strong> cards (1st Placement first), each player places their starting troops (the number on their Starting Troops card) and HQ in a legal starting territory</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">6</span>
+                                <span class="step-content">Write your name and starting territory on the back of your faction card. Factions not chosen get an "X" under Player for this game, then returned to the box</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">7</span>
+                                <span class="step-content">The player with the <strong>First Turn</strong> card goes first. Play continues in turn order card sequence</span>
                             </div>
 
                             <span class="detail-toggle">What's a Legal Starting Territory?</span>
@@ -1052,14 +1096,6 @@
                                 </ul>
                                 <p><strong>Important:</strong> You cannot place your HQ adjacent to another faction's HQ!</p>
                             </div>
-
-                            <p style="margin-top: 1rem;">After all starting troops and HQs are on the board:</p>
-                            <ul>
-                                <li>Players write their name and starting territory on the back of their faction card</li>
-                                <li>Mark the faction card for this game (an "X" if you played but did not win)</li>
-                            </ul>
-
-                            <p><strong>The player who placed first takes the first turn. Play proceeds clockwise.</strong></p>
                         </div>
                     </div>
                 </div>
@@ -1537,6 +1573,33 @@
 
             <!-- REFERENCE SECTION -->
             <div class="section" id="reference">
+                <div class="card" data-title="New Scar Powers" style="border-color: #c0802a;">
+                    <div class="card-header" style="background: linear-gradient(135deg, #6b3e10 0%, var(--bg-card) 100%);">
+                        <h3>📦 New Scar Powers (Pack 1)</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>Pack 1 introduced new Scar cards that can be placed on the board. These are in addition to existing Scars.</p>
+
+                            <div class="reward-box" style="border-color: #c0802a;">
+                                <strong>Rally <span style="font-family: monospace; font-size: 0.75rem; color: var(--text-muted);">J171s</span></strong>
+                                <p>Activate at the <strong>start of your turn</strong>. Place <strong>2 troops in every HQ you control</strong>.</p>
+                            </div>
+
+                            <div class="reward-box" style="border-color: #c0802a;">
+                                <strong>EMP <span style="font-family: monospace; font-size: 0.75rem; color: var(--text-muted);">J170s</span></strong>
+                                <p>Activate <strong>before a combat roll</strong>. Dice rolled for combat in that territory <strong>cannot be modified</strong> for the rest of the turn.</p>
+                            </div>
+
+                            <div class="reward-box" style="border-color: #c0802a;">
+                                <strong>Interference <span style="font-family: monospace; font-size: 0.75rem; color: var(--text-muted);">J170s</span></strong>
+                                <p>Activate <strong>as a player draws a resource card</strong>. That card cannot be drawn. The player can draw any other eligible card instead.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card expanded" data-title="Comeback Powers" style="border-color: #4a90d9;">
                     <div class="card-header" style="background: linear-gradient(135deg, #2a5a8a 0%, var(--bg-card) 100%);">
                         <h3>⬆ Comeback Powers (Pack 2)</h3>
@@ -1692,7 +1755,10 @@
                     </div>
                     <div class="card-body">
                         <div class="card-content">
-                            <p>For your first game, you can ignore Event cards.</p>
+                            <div class="warning-box" style="border-left-color: #4a90d9; background: rgba(74, 144, 217, 0.1);">
+                                <div class="warning-box-title" style="color: #4a90d9;">📦 Event Cards Now Active (Pack 1)</div>
+                                <p>Event cards have been shuffled into the Territory deck. They are now in play for all future games.</p>
+                            </div>
 
                             <p>Event cards get shuffled into the Territory deck after opening certain envelopes. When drawn:</p>
                             <ol>
@@ -1725,7 +1791,7 @@
 
                             <h4>When to Open Packs:</h4>
                             <ul>
-                                <li><strong>Pack 1:</strong> Open when the 9th Minor City is founded (end of game)</li>
+                                <li style="text-decoration: line-through; color: var(--text-muted);"><strong>Pack 1:</strong> ✓ OPENED — 9th Minor City founded → Draft System + new Scar Cards</li>
                                 <li style="text-decoration: line-through; color: var(--text-muted);"><strong>Pack 2:</strong> ✓ OPENED — First player eliminated → Comeback Powers</li>
                                 <li style="text-decoration: line-through; color: var(--text-muted);"><strong>Pack 3:</strong> ✓ OPENED — Second win for same player → Homeland</li>
                                 <li><strong>Pack 4:</strong> Open when the [REDACTED] mark is placed on the board</li>
