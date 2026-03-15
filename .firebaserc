@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "paul-and-chester"
+  },
+  "targets": {
+    "paul-and-chester": {
+      "hosting": {
+        "risk": [
+          "risk-legacy-guide"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Firebase cache
+.firebase/
+
+# Raw image originals (large HEIC files)
+*.heic
+*.HEIC
+
+# Old draft files
+risk-legacy-guide.html

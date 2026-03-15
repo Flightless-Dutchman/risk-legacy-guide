@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>RISK Legacy - Battle Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Oswald:wght@400;500;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B0000;
+            --primary-dark: #5a0000;
+            --danger: #cc0000;
+            --warning: #DAA520;
+            --warning-dark: #b8860b;
+            --bg-dark: #0d0d0d;
+            --bg-medium: #1a1a1a;
+            --bg-card: #222;
+            --bg-card-hover: #2a2a2a;
+            --text: #e8e8e8;
+            --text-muted: #888;
+            --border: #333;
+            --hazard-yellow: #f4d03f;
+            --hazard-black: #1a1a1a;
+
+            /* Dynamic sizing */
+            --base-size: clamp(14px, 2.5vw, 18px);
+            --heading-size: clamp(1.5rem, 4vw, 2.5rem);
+            --card-padding: clamp(12px, 3vw, 24px);
+            --gap: clamp(10px, 2vw, 20px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: var(--base-size);
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Hazard stripe pattern */
+        .hazard-stripe {
+            background: repeating-linear-gradient(
+                45deg,
+                var(--hazard-yellow),
+                var(--hazard-yellow) 10px,
+                var(--hazard-black) 10px,
+                var(--hazard-black) 20px
+            );
+            height: 8px;
+        }
+
+        @media (min-width: 768px) {
+            .hazard-stripe { height: 12px; }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(180deg, var(--bg-medium) 0%, var(--bg-dark) 100%);
+            text-align: center;
+            padding: clamp(20px, 5vw, 40px) var(--gap);
+            position: relative;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .logo {
+            font-family: 'Black Ops One', cursive;
+            font-size: clamp(2rem, 8vw, 4rem);
+            color: var(--warning);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow:
+                3px 3px 0 var(--primary-dark),
+                -1px -1px 0 var(--primary);
+            position: relative;
+        }
+
+        .logo-sub {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(0.8rem, 3vw, 1.2rem);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-top: 0.5rem;
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--gap);
+        }
+
+        /* Search area */
+        .search-section {
+            background: var(--bg-medium);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: var(--card-padding);
+            margin-bottom: var(--gap);
+            position: relative;
+        }
+
+        .search-section::before {
+            content: 'TACTICAL SEARCH';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--bg-medium);
+            padding: 0 10px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            color: var(--warning);
+            letter-spacing: 0.2em;
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        #search {
+            width: 100%;
+            padding: clamp(12px, 3vw, 18px) clamp(15px, 4vw, 50px);
+            padding-left: clamp(40px, 8vw, 50px);
+            font-size: 1rem;
+            font-family: 'Roboto Condensed', sans-serif;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            background: var(--bg-dark);
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        #search:focus {
+            outline: none;
+            border-color: var(--warning);
+            box-shadow: 0 0 20px rgba(218, 165, 32, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: clamp(12px, 3vw, 18px);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--warning);
+            font-size: 1.2rem;
+        }
+
+        /* Search Results Overlay */
+        .search-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: var(--gap);
+        }
+
+        .search-overlay.active {
+            display: block;
+        }
+
+        .search-results-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-top: clamp(60px, 10vw, 80px);
+        }
+
+        .search-results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--gap);
+            padding-bottom: var(--gap);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .search-results-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            color: var(--warning);
+            text-transform: uppercase;
+        }
+
+        .search-results-count {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .search-close {
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: clamp(40px, 8vw, 50px);
+            height: clamp(40px, 8vw, 50px);
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-close:hover {
+            background: var(--warning);
+            color: black;
+            transform: rotate(90deg);
+        }
+
+        .search-result-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--warning);
+            border-radius: 4px;
+            padding: var(--card-padding);
+            margin-bottom: var(--gap);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-result-item:hover {
+            background: var(--bg-card-hover);
+            border-left-color: var(--danger);
+            transform: translateX(5px);
+        }
+
+        .search-result-section {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            color: var(--warning);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+        }
+
+        .search-result-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .search-result-excerpt {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .search-highlight {
+            background: var(--warning);
+            color: black;
+            padding: 1px 4px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: clamp(40px, 10vw, 80px) var(--gap);
+            color: var(--text-muted);
+        }
+
+        .no-results-icon {
+            font-size: clamp(3rem, 10vw, 5rem);
+            margin-bottom: 1rem;
+        }
+
+        /* Game selector and nav */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--gap);
+            margin-bottom: var(--gap);
+            align-items: stretch;
+        }
+
+        .game-selector {
+            flex: 1;
+            min-width: 200px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            padding: var(--card-padding);
+            position: relative;
+        }
+
+        .game-selector::before {
+            content: 'OPERATION';
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: var(--bg-card);
+            padding: 0 8px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.65rem;
+            color: var(--danger);
+            letter-spacing: 0.15em;
+        }
+
+        .game-selector select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            font-family: 'Oswald', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(5px, 1.5vw, 10px);
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .nav-tab {
+            flex: 1;
+            min-width: clamp(80px, 20vw, 120px);
+            padding: clamp(10px, 2vw, 15px) clamp(8px, 2vw, 20px);
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text);
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .nav-tab:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary);
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+            border-color: var(--warning);
+            color: white;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-bottom: var(--gap);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+        }
+
+        .card-header {
+            padding: var(--card-padding);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--bg-card) 100%);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--warning);
+        }
+
+        .card-header h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding-left: 10px;
+        }
+
+        .toggle {
+            width: clamp(24px, 5vw, 32px);
+            height: clamp(24px, 5vw, 32px);
+            background: var(--warning);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: black;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+
+        .card.expanded .toggle {
+            transform: rotate(45deg);
+        }
+
+        .card-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .card.expanded .card-body {
+            max-height: 5000px;
+        }
+
+        .card-content {
+            padding: var(--card-padding);
+        }
+
+        .card-body p {
+            margin-bottom: 1rem;
+        }
+
+        .card-body ul, .card-body ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body h4 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            color: var(--warning);
+            text-transform: uppercase;
+            margin: 1.5rem 0 0.75rem 0;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-body h4:first-child {
+            margin-top: 0;
+        }
+
+        .card-body strong {
+            color: var(--warning);
+        }
+
+        .card-body em {
+            color: var(--text-muted);
+        }
+
+        /* Detail toggles */
+        .detail-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--warning);
+            color: var(--warning);
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0.5rem 0;
+            transition: all 0.3s;
+        }
+
+        .detail-toggle:hover {
+            background: var(--warning);
+            color: black;
+        }
+
+        .detail-toggle::after {
+            content: '▶';
+            font-size: 0.7rem;
+            transition: transform 0.3s;
+        }
+
+        .detail-toggle.open::after {
+            transform: rotate(90deg);
+        }
+
+        .more-detail {
+            display: none;
+            margin: 1rem 0;
+            padding: var(--card-padding);
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--warning);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .more-detail.visible {
+            display: block;
+        }
+
+        /* Warning boxes */
+        .warning-box {
+            background: rgba(218, 165, 32, 0.1);
+            border: 1px solid var(--warning-dark);
+            border-left: 4px solid var(--warning);
+            padding: var(--card-padding);
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .warning-box-title {
+            font-family: 'Oswald', sans-serif;
+            color: var(--warning);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .warning-box-title::before {
+            content: '⚠';
+        }
+
+        /* Steps */
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .step-number {
+            width: clamp(28px, 6vw, 36px);
+            height: clamp(28px, 6vw, 36px);
+            background: var(--primary);
+            border: 2px solid var(--warning);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Oswald', sans-serif;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+            padding-top: 0.25rem;
+        }
+
+        /* Faction cards */
+        .faction {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 0.75rem;
+        }
+
+        .faction-name {
+            font-family: 'Oswald', sans-serif;
+            font-weight: bold;
+            color: var(--warning);
+            min-width: clamp(120px, 25vw, 180px);
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+
+        /* Reward boxes */
+        .reward-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: var(--card-padding);
+            margin: 0.75rem 0;
+            transition: all 0.3s;
+        }
+
+        .reward-box:hover {
+            border-color: var(--warning);
+            background: rgba(139, 0, 0, 0.2);
+        }
+
+        .reward-box strong {
+            display: block;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: clamp(8px, 2vw, 12px);
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .data-table th {
+            background: var(--primary-dark);
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--warning);
+        }
+
+        .data-table tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Quick Reference Button */
+        .quick-ref-btn {
+            position: fixed;
+            bottom: clamp(15px, 4vw, 25px);
+            right: clamp(15px, 4vw, 25px);
+            background: var(--primary);
+            border: 2px solid var(--warning);
+            color: white;
+            padding: clamp(12px, 3vw, 18px) clamp(16px, 4vw, 24px);
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .quick-ref-btn:hover {
+            background: var(--warning);
+            color: black;
+            transform: scale(1.05);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 3000;
+            overflow-y: auto;
+            padding: var(--gap);
+        }
+
+        .modal.visible {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 600px;
+            margin: clamp(20px, 5vw, 50px) auto;
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: var(--card-padding);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--warning);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--warning);
+        }
+
+        .modal-body {
+            padding: var(--card-padding);
+        }
+
+        .modal-body h3 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--warning);
+            text-transform: uppercase;
+            margin: 1.5rem 0 0.75rem 0;
+            font-size: 1rem;
+        }
+
+        .modal-body h3:first-child {
+            margin-top: 0;
+        }
+
+        .modal-body ol, .modal-body ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-body li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .controls {
+                flex-direction: column;
+            }
+
+            .nav-tabs {
+                order: -1;
+            }
+
+            .faction {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .faction-name {
+                min-width: auto;
+            }
+
+            .step {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .step-number {
+                align-self: flex-start;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .card-body {
+                font-size: 1.05rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                padding: calc(var(--gap) * 1.5);
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .quick-ref-btn,
+            .search-section,
+            .game-selector,
+            .nav-tabs,
+            .toggle {
+                display: none !important;
+            }
+
+            .card, .card-body, .more-detail {
+                display: block !important;
+                max-height: none !important;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hazard-stripe"></div>
+
+    <header>
+        <div class="logo">RISK Legacy</div>
+        <div class="logo-sub">Tactical Operations Guide</div>
+    </header>
+
+    <div class="hazard-stripe"></div>
+
+    <div class="container">
+        <div class="search-section">
+            <div class="search-wrapper">
+                <span class="search-icon">⌕</span>
+                <input type="text" id="search" placeholder="Search rules... (supports fuzzy search)">
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="game-selector">
+                <select id="gameNumber">
+                    <option value="1">Game 1 — First Contact</option>
+                    <option value="2">Game 2 — Escalation</option>
+                    <option value="3">Game 3 — Total War</option>
+                    <option value="4">Game 4 — Domination</option>
+                    <option value="5">Game 5+ — Legacy Continues</option>
+                </select>
+            </div>
+
+            <div class="nav-tabs">
+                <div class="nav-tab active" data-section="setup">Setup</div>
+                <div class="nav-tab" data-section="turn">Turn</div>
+                <div class="nav-tab" data-section="combat">Combat</div>
+                <div class="nav-tab" data-section="end">End Game</div>
+                <div class="nav-tab" data-section="reference">Reference</div>
+            </div>
+        </div>
+
+        <div id="content">
+            <!-- SETUP SECTION -->
+            <div class="section active" id="setup">
+                <div class="card expanded" data-title="Game Objective">
+                    <div class="card-header">
+                        <h3>Game Objective</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p><strong>Win by being the first player to have 4 Red Stars.</strong></p>
+                            <p>Alternatively, you win if all other players are eliminated.</p>
+
+                            <span class="detail-toggle">How do I get Red Stars?</span>
+                            <div class="more-detail">
+                                <p>Red Stars can be gained in several ways:</p>
+                                <ul>
+                                    <li>Players who have NOT yet signed the victor's section start with <strong>1 Red Star token</strong></li>
+                                    <li>Every HQ you control on the board counts as <strong>1 Red Star</strong></li>
+                                    <li>Turn in <strong>4 Resource cards</strong> to buy a Red Star token (regardless of coins on cards)</li>
+                                    <li>Complete <strong>Missions</strong> for 1-2 Red Stars</li>
+                                    <li>Other ways unlock as you open sealed components</li>
+                                </ul>
+                                <p><em>Your Red Star total = Red Star tokens you have + HQs you control on the board</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="first-game-setup" data-title="Before Your FIRST Game">
+                    <div class="card-header">
+                        <h3>Before Your FIRST Game (One-Time Setup)</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <div class="warning-box">
+                                <div class="warning-box-title">First Game Only!</div>
+                                <p>These steps permanently modify your game. Only do this once, before your very first game.</p>
+                            </div>
+
+                            <h4>1. Customize the Factions</h4>
+                            <p>Each of the 5 factions needs a starting power. Take the First Game Power cards:</p>
+                            <ol>
+                                <li>For each faction, look at the two power options on their card</li>
+                                <li>Choose ONE power for each faction</li>
+                                <li>Remove the sticker from the card and place it in the green space on that faction's card</li>
+                                <li><strong>DESTROY</strong> the remaining unused powers (they won't come into play)</li>
+                            </ol>
+                            <p><em>Tip: If stuck, flip a coin for each faction!</em></p>
+
+                            <span class="detail-toggle">View the 5 Factions</span>
+                            <div class="more-detail">
+                                <div class="faction">
+                                    <span class="faction-name">Die Mechaniker</span>
+                                    <span>Heavily armored and defensive. Rely on surviving what enemies throw at them.</span>
+                                </div>
+                                <div class="faction">
+                                    <span class="faction-name">Enclave of the Bear</span>
+                                    <span>Savage and primal. Genetically altered humans who terrify enemies with ferocity.</span>
+                                </div>
+                                <div class="faction">
+                                    <span class="faction-name">Imperial Balkania</span>
+                                    <span>Pure humans who are organized and diligently trained. Want to spread their world vision.</span>
+                                </div>
+                                <div class="faction">
+                                    <span class="faction-name">Khan Industries</span>
+                                    <span>Well-armed but not well-trained. Overpopulated with diverse members. Motto: people and guns are cheap.</span>
+                                </div>
+                                <div class="faction">
+                                    <span class="faction-name">Saharan Republic</span>
+                                    <span>Savvy warriors with old equipment and guerilla tactics. Mobile and hard to find.</span>
+                                </div>
+                            </div>
+
+                            <h4>2. Customize the Resource Deck</h4>
+                            <p>Each Territory card starts with 1 coin. The sticker sheet marked "BEFORE YOUR FIRST GAME" has 12 additional coins.</p>
+                            <ol>
+                                <li>Remove the 12 Coin stickers from the card</li>
+                                <li>Apply them to Territory cards (max 6 resources on any card)</li>
+                            </ol>
+
+                            <div class="warning-box">
+                                <div class="warning-box-title">Strategic Tip</div>
+                                <p>Increasing a territory to 3+ resources makes it hotly contested. Spreading coins gives the whole board value; concentrating them in one continent makes that continent very valuable.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Setup Before EVERY Game">
+                    <div class="card-header">
+                        <h3>Setup Before EVERY Game</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <h4>Setting Up the Sideboard</h4>
+                            <div class="step">
+                                <span class="step-number">1</span>
+                                <span class="step-content">Shuffle the Territory deck and place it face down on the sideboard</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">2</span>
+                                <span class="step-content">Place the Coin cards face up next to it (don't worry about these until you open envelopes)</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">3</span>
+                                <span class="step-content">Place one Mission card face up on the Mission slot</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">4</span>
+                                <span class="step-content">Turn over the top 4 Territory cards and place them face up</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">5</span>
+                                <span class="step-content">Place Red Star tokens to the side</span>
+                            </div>
+
+                            <h4>Player Setup</h4>
+                            <p>Each player starts with either:</p>
+                            <ul>
+                                <li><strong>A Red Star token</strong> — if you haven't signed the victor's section yet, OR</li>
+                                <li><strong>Missile token(s)</strong> — one for every time your name appears in the victor's section</li>
+                            </ul>
+
+                            <h4>Scar Cards</h4>
+                            <p>Shuffle and deal ONE Scar card to each player. If there aren't enough for everyone, no one gets one this game.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Choosing Factions & Starting Positions">
+                    <div class="card-header">
+                        <h3>Choosing Factions & Starting Positions</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <div class="step">
+                                <span class="step-number">1</span>
+                                <span class="step-content">Lay out the Faction cards face up on the table</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">2</span>
+                                <span class="step-content">Everyone rolls dice. Highest roll picks first</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">3</span>
+                                <span class="step-content">First player chooses a faction AND takes that faction's troops and HQ</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">4</span>
+                                <span class="step-content">Place your HQ in a <strong>legal starting territory</strong>, then place 8 troops from your starting troops with it</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">5</span>
+                                <span class="step-content">Selection continues clockwise until everyone has a faction and starting position</span>
+                            </div>
+
+                            <span class="detail-toggle">What's a Legal Starting Territory?</span>
+                            <div class="more-detail">
+                                <p>A legal starting territory is either:</p>
+                                <ul>
+                                    <li>An <strong>unoccupied</strong> territory with no marks (no scars or cities), OR</li>
+                                    <li>An unoccupied territory that contains a <strong>Major City you founded</strong> in an earlier game (even if it has a scar)</li>
+                                </ul>
+                                <p><strong>Important:</strong> You cannot place your HQ adjacent to another faction's HQ!</p>
+                            </div>
+
+                            <p style="margin-top: 1rem;">After all starting troops and HQs are on the board:</p>
+                            <ul>
+                                <li>Players write their name and starting territory on the back of their faction card</li>
+                                <li>Mark the faction card for this game (an "X" if you played but did not win)</li>
+                            </ul>
+
+                            <p><strong>The player who placed first takes the first turn. Play proceeds clockwise.</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TURN SECTION -->
+            <div class="section" id="turn">
+                <div class="card expanded" data-title="Turn Overview">
+                    <div class="card-header">
+                        <h3>Turn Overview</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>Each turn has these steps <strong>in order</strong>:</p>
+                            <ol>
+                                <li><strong>Start of Turn</strong> — Turn in cards, play Scar cards</li>
+                                <li><strong>Join the War OR Recruit Troops</strong> — (one or the other, not both)</li>
+                                <li><strong>Expand & Attack</strong> (optional)</li>
+                                <li><strong>Maneuver Troops</strong> (optional)</li>
+                                <li><strong>End of Turn</strong> — Draw cards, trigger scars</li>
+                            </ol>
+
+                            <div class="warning-box">
+                                <div class="warning-box-title">Timing Note</div>
+                                <p>If multiple players want to play a scar card or use an ability at the same time, priority goes to: whoever declared first → current player → defender (if in combat) → clockwise from current player.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Start of Turn">
+                    <div class="card-header">
+                        <h3>1. Start of Turn</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <h4>Turn In Cards for a Red Star</h4>
+                            <p>You may turn in <strong>4 Resource cards</strong> to buy one Red Star token. The number of coins doesn't matter — any 4 cards work.</p>
+                            <ul>
+                                <li>Territory cards go to the discard pile</li>
+                                <li>Coin cards return face up to the sideboard</li>
+                                <li>You can buy multiple Red Stars if you have enough cards</li>
+                            </ul>
+                            <p><strong>If you purchase your 4th Red Star, you win immediately!</strong></p>
+
+                            <h4>Playing a Scar Card</h4>
+                            <p>Some Scar cards are played at the start of a player's turn (yours or any player's). Check your Scar card for timing.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Join the War OR Recruit Troops">
+                    <div class="card-header">
+                        <h3>2. Join the War OR Recruit Troops</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <div class="warning-box">
+                                <div class="warning-box-title">Important!</div>
+                                <p>You do ONE of these, not both. If you control no territories, you MUST Join the War.</p>
+                            </div>
+
+                            <h4>Join the War</h4>
+                            <p>If there's a legal starting territory available:</p>
+                            <ol>
+                                <li>Take HALF your starting troops (round down)</li>
+                                <li>Place them in a legal starting territory</li>
+                                <li>You do NOT get another HQ</li>
+                            </ol>
+
+                            <h4>Recruit Troops</h4>
+                            <p>Add up troops from these sources:</p>
+
+                            <table class="data-table">
+                                <tr>
+                                    <th>Source</th>
+                                    <th>Troops</th>
+                                </tr>
+                                <tr>
+                                    <td>Territories controlled</td>
+                                    <td># of territories ÷ 3 (round down)</td>
+                                </tr>
+                                <tr>
+                                    <td>Population (cities)</td>
+                                    <td>Sum of city populations ÷ 3 (round down)</td>
+                                </tr>
+                                <tr>
+                                    <td>Continent bonus</td>
+                                    <td>See board for each continent</td>
+                                </tr>
+                                <tr>
+                                    <td>Turn in cards</td>
+                                    <td>See chart on board</td>
+                                </tr>
+                            </table>
+
+                            <span class="detail-toggle">Population Details</span>
+                            <div class="more-detail">
+                                <p>Cities have population values:</p>
+                                <ul>
+                                    <li><strong>Minor City:</strong> Population 1</li>
+                                    <li><strong>Major City:</strong> Population 2</li>
+                                    <li><strong>World Capital:</strong> Population 5</li>
+                                </ul>
+                                <p>Your total population = sum of all cities you control. Add this to your territory count before dividing by 3.</p>
+                            </div>
+
+                            <span class="detail-toggle">Turning In Cards for Troops</span>
+                            <div class="more-detail">
+                                <p>If you have cards totaling 2+ Resources (count the coins), you may turn them in for troops.</p>
+                                <p>Refer to the chart on the board to see how many troops you get for each resource total (2-10).</p>
+                                <p>The territories on the cards are irrelevant when recruiting. Coin cards return to the sideboard; Territory cards go to discard.</p>
+                            </div>
+
+                            <h4>Placing Troops</h4>
+                            <p>Place ALL recruited troops in territories you control. You can put them all in one territory or spread them out.</p>
+                            <p><em>Minimum recruitment is 3 troops (round up if calculation gives less).</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Expand & Attack">
+                    <div class="card-header">
+                        <h3>3. Expand & Attack (Optional)</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>You can expand into unoccupied territories and/or attack enemies. This is optional and you can do as much as you want (as long as you have troops).</p>
+
+                            <h4>Expanding into Unoccupied Territory</h4>
+                            <p>Move at least 1 troop from an adjacent territory into the unoccupied one. You now control it.</p>
+
+                            <h4>Expanding into Unoccupied Cities</h4>
+                            <p>Same as above, BUT you lose troops equal to the city's population. If you wouldn't have enough troops left to hold the territory, you cannot expand there.</p>
+
+                            <h4>Attacking Enemies</h4>
+                            <p>See the <strong>Combat</strong> section for detailed attack rules.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Maneuver Troops">
+                    <div class="card-header">
+                        <h3>4. Maneuver Troops (Optional)</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>After all expanding and attacking, you may perform <strong>one maneuver</strong>:</p>
+                            <ul>
+                                <li>Move as many troops as you like from one of your territories to another</li>
+                                <li>Territories must be connected through territories you control</li>
+                                <li>You cannot pass through enemy or empty territories</li>
+                                <li>You must leave at least 1 troop behind in the origin territory</li>
+                            </ul>
+                            <p><em>This is movement only, not an attack or expansion.</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="End of Turn">
+                    <div class="card-header">
+                        <h3>5. End of Turn</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <h4>Drawing a Card</h4>
+                            <p>If you attacked and conquered at least 1 territory this turn, draw 1 Resource card:</p>
+                            <ul>
+                                <li>If you control one or more territories shown on the face-up cards, you <strong>must</strong> select one of those cards. The choice is yours.</li>
+                                <li>Otherwise, draw from the face-up Coin cards</li>
+                                <li>If no Coin cards, you don't get a card</li>
+                            </ul>
+
+                            <div class="warning-box" style="border-left-color: #4a90d9; background: rgba(74, 144, 217, 0.1);">
+                                <div class="warning-box-title" style="color: #4a90d9;">🏠 Homeland Bonus (Pack 3)</div>
+                                <p>You may draw a face-up card containing a territory in your <strong>Homeland</strong>, even if you do not currently control that territory.</p>
+                                <p><em>Your Homeland is the continent that has been your faction's starting location most often (check the back of your faction card). If there's a tie, your faction does not have a homeland yet.</em></p>
+                            </div>
+
+                            <p>When you take a Territory card, slide remaining cards left, then flip a new one from the deck.</p>
+
+                            <p><strong>You can only draw 1 card per turn</strong> (unless a power says otherwise). Expanding into unoccupied territory does NOT count.</p>
+
+                            <h4>Scars</h4>
+                            <p>Some Scars on the board trigger at the end of your turn. Check the reference stickers on the board.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMBAT SECTION -->
+            <div class="section" id="combat">
+                <div class="card expanded" data-title="How to Attack">
+                    <div class="card-header">
+                        <h3>How to Attack</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <div class="step">
+                                <span class="step-number">1</span>
+                                <span class="step-content"><strong>Choose attacking territory</strong> — Must have at least 2 troops (1 stays behind to guard)</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">2</span>
+                                <span class="step-content"><strong>Choose target</strong> — Must be adjacent to your attacking territory and contain enemy troops</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">3</span>
+                                <span class="step-content"><strong>Declare attackers</strong> — Choose 1, 2, or 3 troops to attack (max 3)</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">4</span>
+                                <span class="step-content"><strong>Defender declares</strong> — Defender chooses 1 or 2 troops to defend</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">5</span>
+                                <span class="step-content"><strong>Roll dice</strong> — Attacker rolls black dice (1 per troop), defender rolls red dice (1 per troop)</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">6</span>
+                                <span class="step-content"><strong>Compare dice</strong> — Sort highest to lowest. Compare highest vs highest, then second vs second</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">7</span>
+                                <span class="step-content"><strong>Remove casualties</strong> — Higher die wins, defender wins ties. Loser removes 1 troop per comparison</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Winning a Territory">
+                    <div class="card-header">
+                        <h3>Winning a Territory</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <h4>If the Defender Has No More Troops</h4>
+                            <p>Move your attacking troops into the territory. You may also move additional troops from the attacking territory (but leave at least 1 behind).</p>
+                            <p>You can move up to 3 additional troops even though you attacked with max 3.</p>
+                            <p><strong>No territory can ever be left abandoned</strong> — all troops must move to a new territory.</p>
+
+                            <h4>Conquering an HQ</h4>
+                            <p>If the conquered territory has an enemy HQ, leave it there. You now control that HQ and it counts as one of YOUR Red Stars!</p>
+                            <p><strong>If this gives you 4 Red Stars, you win immediately!</strong></p>
+
+                            <h4>If Defender Still Has Troops</h4>
+                            <p>You may attack again (same or different territory) or stop. The defender cannot be forced out until all their troops are eliminated.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Modifying Die Rolls">
+                    <div class="card-header">
+                        <h3>Modifying Die Rolls</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>Marks on the board, Missiles, and faction powers can modify dice. Rules:</p>
+                            <ul>
+                                <li>A modified die can never be higher than 6 or lower than 1</li>
+                                <li>If more than one die is the same number, only ONE is modified per Scar, Power, or Missile</li>
+                            </ul>
+
+                            <p><strong>Example:</strong> Attacking a territory with a Bunker that gives +1 to defense. Defender rolls two 5s. Only one becomes a 6, so the rolls are 6 and 5.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Missiles">
+                    <div class="card-header">
+                        <h3>Missiles</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>Players who have won previous games receive Missile tokens at game start.</p>
+
+                            <h4>Using Missiles</h4>
+                            <ul>
+                                <li>Played AFTER dice are rolled but BEFORE troops are removed</li>
+                                <li>Each Missile changes one die to a 6 (unmodifiable)</li>
+                                <li>A player may use multiple Missiles per battle</li>
+                                <li>Multiple Missiles can change multiple dice</li>
+                            </ul>
+
+                            <h4>Who Can Use Missiles?</h4>
+                            <p>Any player (not just attacker/defender) can use a Missile to affect any battle!</p>
+                            <p>If multiple players want to play Missiles at the same time: attacker first, then defender, then clockwise from attacker.</p>
+
+                            <p><em>Missiles are discarded after use and removed from the game box.</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Fortifications">
+                    <div class="card-header">
+                        <h3>Fortifications</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>Fortifications are energy shields that protect cities. A <strong>Fortified city costs 2 additional troops</strong> to expand into if unoccupied.</p>
+
+                            <h4>Defending a Fortified City</h4>
+                            <p>When defending, the defender adds <strong>+1 to both dice</strong>.</p>
+
+                            <h4>Fortification Damage</h4>
+                            <p>After each attack with 3+ troops, mark one box around the Fortification. Once all 10 boxes are marked, the city is no longer fortified.</p>
+                            <p>A depleted Fortification can be re-fortified with a new Fortification mark (remaining uses on old one are ignored).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Knocking Out a Player">
+                    <div class="card-header">
+                        <h3>Knocking Out a Player</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>If you defeat the last troop on the board belonging to another player:</p>
+                            <ul>
+                                <li>Take all of their Resource cards (but NOT their Scar card)</li>
+                                <li>Take their Red Star tokens (if any)</li>
+                                <li>Take their Missile tokens (if any)</li>
+                            </ul>
+                            <p>Depending on the state of the board, they may or may not be able to Join the War on their next turn.</p>
+
+                            <div class="warning-box" style="border-left-color: #4a90d9; background: rgba(74, 144, 217, 0.1);">
+                                <div class="warning-box-title" style="color: #4a90d9;">⬆ Comeback Power (Pack 2)</div>
+                                <p>When a faction with an <strong>empty blue slot</strong> is knocked out or eliminated, the player controlling that faction chooses a <strong>Comeback Power</strong> and places it onto the blue slot on their faction card.</p>
+                                <p>Each faction can only have <strong>one</strong> comeback power. See the Reference section for available powers.</p>
+                            </div>
+
+                            <h4>Elimination</h4>
+                            <p>If there are no legal starting territories when it's your turn, and you have no troops on the board, you are <strong>eliminated</strong> from the game.</p>
+                            <p>Turn over your faction card and mark "Eliminated" for this game. Plot your revenge for next game!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- END OF GAME SECTION -->
+            <div class="section" id="end">
+                <div class="card expanded" data-title="Game End Trigger">
+                    <div class="card-header">
+                        <h3>Game End Trigger</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>The game ends immediately when:</p>
+                            <ul>
+                                <li>A player has <strong>4 Red Stars</strong>, OR</li>
+                                <li>All other players are <strong>eliminated</strong></li>
+                            </ul>
+                            <p>The first 15 games played on this board show both the winner and the faction that held on (wasn't eliminated).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Record Your Game">
+                    <div class="card-header">
+                        <h3>Everyone: Record Your Game</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>All players turn over their Faction cards and record whether that Faction:</p>
+                            <ul>
+                                <li>Won the game</li>
+                                <li>Held On (didn't win, but wasn't eliminated)</li>
+                                <li>Was Eliminated</li>
+                            </ul>
+                            <p>If you have no troops on the board when the game ends, you are considered eliminated (even if a legal starting territory opens up later).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Winner Rewards">
+                    <div class="card-header">
+                        <h3>If You WON</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>The winner signs their name and dates the next line on the board. Add any comments, mottos, or trash talk!</p>
+
+                            <h4>Choose ONE Reward:</h4>
+
+                            <div class="reward-box">
+                                <strong>Name a Continent (+1 bonus troops)</strong>
+                                <p>Name any unnamed continent. In future games, controlling it gives +1 troop bonus. You may put your initials to remember you named it.</p>
+                            </div>
+
+                            <div class="reward-box">
+                                <strong>Found a Major City (+2 population)</strong>
+                                <p>Place a Major City mark in any territory that doesn't have a city. Name it. Worth population 2 and becomes a legal starting territory for you.</p>
+                            </div>
+
+                            <div class="reward-box">
+                                <strong>Cancel a Scar</strong>
+                                <p>Place a white "cancel" sticker over any Scar on the board. That territory no longer has a Scar and a new one can be placed there.</p>
+                            </div>
+
+                            <div class="reward-box">
+                                <strong>Place a Fortification (+1/+1 defense)</strong>
+                                <p>Put a Fortification mark on any city (even one already fortified to reset uses). Gives +1 to both defender dice.</p>
+                            </div>
+
+                            <div class="reward-box">
+                                <strong>Destroy a Territory Card</strong>
+                                <p>Select any Territory card and DESTROY it. Write a small "x" near that territory's name on the board to show it has no card.</p>
+                            </div>
+
+                            <div class="reward-box">
+                                <strong>Change a Continent Bonus (+1 or -1)</strong>
+                                <p>Permanently change any continent's troop bonus by +1 or -1. Bonus can only be changed once (up or down).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Held On Rewards">
+                    <div class="card-header">
+                        <h3>If You HELD ON (But Didn't Win)</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>Proceeding clockwise from the winner, each player who Held On chooses ONE:</p>
+
+                            <div class="reward-box">
+                                <strong>Found a Minor City (+1 population)</strong>
+                                <p>Place a Minor City in any territory without a city. Name it. Worth population 1 and becomes a legal starting territory for you.</p>
+                            </div>
+
+                            <div class="reward-box">
+                                <strong>Upgrade a Card (+1 resource)</strong>
+                                <p>Choose a territory you controlled at game end that has a matching Territory card. Add one resource sticker to it. Max 6 resources per card.</p>
+                            </div>
+
+                            <p style="margin-top: 1rem;"><em>Note: If there are no more Minor City marks or Coin stickers to place, the losers no longer gain any additional rewards.</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Completed World">
+                    <div class="card-header">
+                        <h3>Completed World (After 15 Games)</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>At the conclusion of the 15th game, once all rewards are chosen:</p>
+                            <ol>
+                                <li>The player who signed the victor's section the most times gets to name the planet</li>
+                                <li>Fill in "The World Of" on the board with the name</li>
+                                <li>If players are tied for most wins, those tied roll off — adding +1 for each continent they named</li>
+                            </ol>
+                            <p>After 15 games, no further changes are made to the board. The game is now played in a world entirely of the players' making. Cards, new components, Scars, etc. will still change the world.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REFERENCE SECTION -->
+            <div class="section" id="reference">
+                <div class="card expanded" data-title="Comeback Powers" style="border-color: #4a90d9;">
+                    <div class="card-header" style="background: linear-gradient(135deg, #2a5a8a 0%, var(--bg-card) 100%);">
+                        <h3>⬆ Comeback Powers (Pack 2)</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>When a faction with an empty blue slot is <strong>knocked out or eliminated</strong>, the controlling player chooses one of these powers and places it on their faction card. Each faction can only have <strong>one</strong> comeback power.</p>
+
+                            <div class="reward-box" style="border-color: #4a90d9;">
+                                <strong>Resourceful</strong>
+                                <p>As long as you expanded into a city territory, you draw a resource card, even if you didn't conquer a territory.</p>
+                            </div>
+
+                            <div class="reward-box" style="border-color: #4a90d9;">
+                                <strong>Stealthy</strong>
+                                <p>You may place some or all of your recruited troops into one unmarked, unoccupied territory. This is not an expansion.</p>
+                            </div>
+
+                            <div class="reward-box" style="border-color: #4a90d9;">
+                                <strong>Well-Armed</strong>
+                                <p>Add +1 to all of your attack dice when attacking an HQ.</p>
+                            </div>
+
+                            <div class="reward-box" style="border-color: #4a90d9;">
+                                <strong>Mobile</strong>
+                                <p>At the start of your turn, you may move one HQ you control to an adjacent territory you control. HQs cannot share a territory.</p>
+                            </div>
+
+                            <div class="reward-box" style="border-color: #4a90d9;">
+                                <strong>Convincing</strong>
+                                <p>You gain one extra troop in Mercenary territories.</p>
+                            </div>
+
+                            <div class="reward-box" style="border-color: #4a90d9;">
+                                <strong>Well-Supplied</strong>
+                                <p>When defending, you are unaffected by Ammo Shortage scars.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Homeland" style="border-color: #4a90d9;">
+                    <div class="card-header" style="background: linear-gradient(135deg, #2a5a8a 0%, var(--bg-card) 100%);">
+                        <h3>🏠 Homeland (Pack 3)</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>Factions are starting to become attached to their new world. By this time they are starting to develop a <strong>Homeland</strong>.</p>
+
+                            <h4>Determining Your Homeland</h4>
+                            <p>Look at the back of your faction card. Your faction's Homeland is the <strong>continent that has been the starting location most often</strong> for that faction (including this game).</p>
+
+                            <div class="warning-box">
+                                <div class="warning-box-title">Important</div>
+                                <p>If there is a tie for most common starting continent, your faction <strong>does not have a homeland yet</strong>.</p>
+                            </div>
+
+                            <h4>Homeland Benefit</h4>
+                            <p>At the end of your turn, when you draw a resource card, you may draw a face-up card containing a territory in your Homeland, <strong>even if you do not currently control that territory</strong>.</p>
+
+                            <p><em>This gives your faction an advantage when collecting cards from their home continent, even when opponents control those territories.</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card expanded" data-title="Key Terms Glossary">
+                    <div class="card-header">
+                        <h3>Key Terms Glossary</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p><strong>Marks:</strong> Stickers placed on the game board (territories, continents). A territory is MARKED if it has any sticker; otherwise UNMARKED.</p>
+
+                            <p><strong>City:</strong> A mark with a population value. Three types: Minor City (1), Major City (2), World Capital (5). A territory can have ONE city at a time.</p>
+
+                            <p><strong>Scar:</strong> A type of mark that modifies a territory. Most affect combat. A territory can only have ONE Scar at a time. You cannot cover an existing Scar unless noted.</p>
+
+                            <p><strong>Powers:</strong> Marks that modify Faction cards. A Faction can only have ONE power of each type.</p>
+
+                            <p><strong>Controlled/Uncontrolled:</strong> You control a territory when you have troops in it. Your HQ alone does NOT mean you control it.</p>
+
+                            <p><strong>Occupied/Unoccupied:</strong> A territory is OCCUPIED when any plastic piece is in it (troop or HQ). It's UNOCCUPIED when there are no plastic pieces.</p>
+
+                            <p><strong>Natural:</strong> When text refers to a natural die roll, it means the number rolled BEFORE any modifications.</p>
+
+                            <p><strong>Discard/Destroy:</strong> DISCARD = placed into discard pile (may return). DESTROY = removed from game permanently.</p>
+
+                            <p><strong>Remove/Lose (troops):</strong> Troops go back into your troop pile (they can be recruited again).</p>
+
+                            <p><strong>Population:</strong> The number noted on a city mark. Your population = sum of all cities you control.</p>
+
+                            <p><strong>Demolish (HQ):</strong> If your HQ is demolished, it goes back in the box but can come back in future games.</p>
+
+                            <p><strong style="color: #4a90d9;">Homeland (Pack 3):</strong> The continent that has been your faction's starting location most often. Check the back of your faction card. Lets you draw territory cards from that continent even if you don't control them.</p>
+
+                            <p><strong style="color: #4a90d9;">Comeback Power (Pack 2):</strong> A blue power gained when your faction is knocked out or eliminated. Placed on the blue slot of your faction card. Each faction can only have one.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Card Types">
+                    <div class="card-header">
+                        <h3>Card Types</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p><strong>Territory Cards:</strong> Have a territory name and Coin symbol. Starting resources vary. Max 6 resources per card.</p>
+
+                            <p><strong>Coin Cards:</strong> Have ONLY the Coin symbol (no territory). Can never be upgraded. Return to sideboard when turned in.</p>
+
+                            <p><strong>Scar Cards:</strong> Dealt at game start. Usually played during the game to place Scars on the board.</p>
+
+                            <p><strong>Starting Power Cards:</strong> Give factions their starting power. Only used during first game setup.</p>
+
+                            <p><strong>Event Cards:</strong> Shuffled with Territory deck after an envelope is opened. Resolve when drawn.</p>
+
+                            <p><strong>Mission Cards:</strong> One face-up on sideboard. Complete during your turn for 1-2 Red Stars.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Mission Cards">
+                    <div class="card-header">
+                        <h3>Mission Cards</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>At the start of the game, place one Mission card face up on the sideboard.</p>
+                            <p>Any player may complete the mission on their turn to earn 1-2 Red Star tokens.</p>
+
+                            <h4>Completing a Mission</h4>
+                            <ul>
+                                <li>At the end of your turn, if you've completed the face-up mission, discard it and take your reward</li>
+                                <li>Place a new random Mission card face up</li>
+                                <li>You can only complete one mission per turn</li>
+                                <li>You cannot draw a Resource card on the same turn you complete a mission</li>
+                            </ul>
+
+                            <p><em>Note: You can always draw a Resource card instead of completing a Mission, if you're entitled to one.</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Event Cards">
+                    <div class="card-header">
+                        <h3>Event Cards</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <p>For your first game, you can ignore Event cards.</p>
+
+                            <p>Event cards get shuffled into the Territory deck after opening certain envelopes. When drawn:</p>
+                            <ol>
+                                <li>If the newly revealed card in slot 1 has an EVEN number of resources, an event occurs</li>
+                                <li>Turn over the top card in the Event deck and perform the action</li>
+                                <li>Discarded Event cards go back in the box (not reshuffled until deck runs out)</li>
+                            </ol>
+
+                            <p>You don't trigger an event when laying out initial Territory cards at game start.</p>
+
+                            <h4>Conflicting Powers</h4>
+                            <p>Sometimes Event cards conflict with Faction powers. Negative effects from Events override any extra abilities a Faction has.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="Opening New Packages">
+                    <div class="card-header">
+                        <h3>Opening New Packages</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <div class="warning-box">
+                                <div class="warning-box-title">Don't Open Early!</div>
+                                <p>Sealed components contain surprises. Only open when you've satisfied the requirement listed. You can open them in any order once you've earned it.</p>
+                            </div>
+
+                            <p>Every pack contains cards called "THE WAR PROGRESSES" that explain what's in the pack and where stickers go. Refer to the back of each Evolution card.</p>
+
+                            <h4>When to Open Packs:</h4>
+                            <ul>
+                                <li><strong>Pack 1:</strong> Open when the 9th Minor City is founded (end of game)</li>
+                                <li style="text-decoration: line-through; color: var(--text-muted);"><strong>Pack 2:</strong> ✓ OPENED — First player eliminated → Comeback Powers</li>
+                                <li style="text-decoration: line-through; color: var(--text-muted);"><strong>Pack 3:</strong> ✓ OPENED — Second win for same player → Homeland</li>
+                                <li><strong>Pack 4:</strong> Open when the [REDACTED] mark is placed on the board</li>
+                            </ul>
+
+                            <h4>When to Open Pockets:</h4>
+                            <ul>
+                                <li><strong>Pocket 1:</strong> Open when 3 Missiles are used in the same combat roll (before troops removed)</li>
+                                <li><strong>Pocket 2:</strong> Open when a person is about to place 30+ troops on the board AND has at least one Missile</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-title="When Decks Run Out">
+                    <div class="card-header">
+                        <h3>When Decks Run Out</h3>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-content">
+                            <h4>Territory Deck</h4>
+                            <p>Shuffle the discard pile to make a new draw pile. However, more Event cards may come into play mid-game. These would be shuffled with any cards left in the event deck as the game continues.</p>
+
+                            <h4>Coin Card Deck</h4>
+                            <p>The first time this happens, follow the instructions on the sideboard to award a Red Star token to the player who controls the most territories.</p>
+                            <p>If there's a tie, no player gets a Red Star.</p>
+                            <p>If the Coin deck runs out again in the same game, this Red Star is NOT awarded a second time.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="quick-ref-btn" onclick="toggleModal()">⚡ Quick Ref</button>
+
+    <!-- Search Results Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-results-container">
+            <div class="search-results-header">
+                <div>
+                    <div class="search-results-title">Search Results</div>
+                    <div class="search-results-count" id="searchResultsCount"></div>
+                </div>
+                <button class="search-close" onclick="closeSearch()">×</button>
+            </div>
+            <div id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- Quick Reference Modal -->
+    <div class="modal" id="quickRefModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚡ Quick Reference</h2>
+                <button class="modal-close" onclick="toggleModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <h3>Turn Order</h3>
+                <ol>
+                    <li>Start of Turn (trade cards, play Scars)</li>
+                    <li>Join the War OR Recruit Troops</li>
+                    <li>Expand & Attack (optional)</li>
+                    <li>Maneuver (optional, once)</li>
+                    <li>End of Turn (draw card)</li>
+                </ol>
+
+                <h3>Winning</h3>
+                <p>First to <strong>4 Red Stars</strong> OR last player standing</p>
+
+                <h3>Combat Summary</h3>
+                <ol>
+                    <li>Attacker chooses 1-3 troops</li>
+                    <li>Defender chooses 1-2 troops</li>
+                    <li>Roll 1 die per troop (black=attack, red=defend)</li>
+                    <li>Compare highest to highest</li>
+                    <li><strong>Defender wins ties</strong></li>
+                </ol>
+
+                <h3>Troop Recruitment</h3>
+                <table class="data-table">
+                    <tr><th>Source</th><th>Formula</th></tr>
+                    <tr><td>Territories</td><td># ÷ 3</td></tr>
+                    <tr><td>Population</td><td>Sum ÷ 3</td></tr>
+                    <tr><td>Continents</td><td>See board</td></tr>
+                    <tr><td>Cards</td><td>See board chart</td></tr>
+                </table>
+                <p><em>Minimum 3 troops per turn</em></p>
+
+                <h3>City Populations</h3>
+                <table class="data-table">
+                    <tr><th>Type</th><th>Population</th></tr>
+                    <tr><td>Minor City</td><td>1</td></tr>
+                    <tr><td>Major City</td><td>2</td></tr>
+                    <tr><td>World Capital</td><td>5</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="hazard-stripe" style="position: fixed; bottom: 0; left: 0; right: 0;"></div>
+
+    <script>
+        // Data structure for search
+        const searchData = [];
+
+        // Build search index from cards
+        document.querySelectorAll('.card').forEach(card => {
+            const section = card.closest('.section');
+            const sectionName = section ? section.id : 'unknown';
+            const sectionLabels = {
+                'setup': 'Setup',
+                'turn': 'Playing a Turn',
+                'combat': 'Combat',
+                'end': 'End of Game',
+                'reference': 'Reference'
+            };
+
+            const title = card.dataset.title || card.querySelector('h3')?.textContent || 'Untitled';
+            const content = card.querySelector('.card-content')?.textContent || card.querySelector('.card-body')?.textContent || '';
+
+            searchData.push({
+                element: card,
+                section: sectionName,
+                sectionLabel: sectionLabels[sectionName] || sectionName,
+                title: title,
+                content: content.trim()
+            });
+        });
+
+        // Fuzzy match function
+        function fuzzyMatch(text, query) {
+            text = text.toLowerCase();
+            query = query.toLowerCase();
+
+            if (text.includes(query)) return 100;
+
+            let queryIdx = 0;
+            let consecutiveMatches = 0;
+            let maxConsecutive = 0;
+
+            for (let i = 0; i < text.length && queryIdx < query.length; i++) {
+                if (text[i] === query[queryIdx]) {
+                    queryIdx++;
+                    consecutiveMatches++;
+                    maxConsecutive = Math.max(maxConsecutive, consecutiveMatches);
+                } else {
+                    consecutiveMatches = 0;
+                }
+            }
+
+            if (queryIdx !== query.length) return 0;
+            return (maxConsecutive / query.length) * 50 + 10;
+        }
+
+        // Highlight text
+        function highlightText(text, query) {
+            if (!query) return text;
+
+            const lowerText = text.toLowerCase();
+            const lowerQuery = query.toLowerCase();
+
+            // Try exact match first
+            const idx = lowerText.indexOf(lowerQuery);
+            if (idx !== -1) {
+                return text.substring(0, idx) +
+                    '<span class="search-highlight">' + text.substring(idx, idx + query.length) + '</span>' +
+                    text.substring(idx + query.length);
+            }
+
+            // Try word matches
+            const words = query.split(/\s+/).filter(w => w.length >= 2);
+            let result = text;
+            for (const word of words) {
+                const wordIdx = result.toLowerCase().indexOf(word.toLowerCase());
+                if (wordIdx !== -1) {
+                    result = result.substring(0, wordIdx) +
+                        '<span class="search-highlight">' + result.substring(wordIdx, wordIdx + word.length) + '</span>' +
+                        result.substring(wordIdx + word.length);
+                }
+            }
+
+            return result;
+        }
+
+        // Get excerpt around match
+        function getExcerpt(text, query, maxLength = 150) {
+            const lowerText = text.toLowerCase();
+            const lowerQuery = query.toLowerCase();
+
+            let idx = lowerText.indexOf(lowerQuery);
+            if (idx === -1) {
+                // Try individual words
+                const words = query.split(/\s+/).filter(w => w.length >= 2);
+                for (const word of words) {
+                    idx = lowerText.indexOf(word.toLowerCase());
+                    if (idx !== -1) break;
+                }
+            }
+
+            if (idx === -1) idx = 0;
+
+            const start = Math.max(0, idx - 50);
+            const end = Math.min(text.length, start + maxLength);
+
+            let excerpt = text.substring(start, end);
+            if (start > 0) excerpt = '...' + excerpt;
+            if (end < text.length) excerpt = excerpt + '...';
+
+            return highlightText(excerpt, query);
+        }
+
+        // Perform search
+        function performSearch(query) {
+            const overlay = document.getElementById('searchOverlay');
+            const resultsContainer = document.getElementById('searchResults');
+            const countDisplay = document.getElementById('searchResultsCount');
+
+            if (query.length < 2) {
+                overlay.classList.remove('active');
+                return;
+            }
+
+            const results = [];
+
+            for (const item of searchData) {
+                const titleScore = fuzzyMatch(item.title, query) * 2;
+                const contentScore = fuzzyMatch(item.content, query);
+                const score = Math.max(titleScore, contentScore);
+
+                if (score > 0) {
+                    results.push({ ...item, score });
+                }
+            }
+
+            results.sort((a, b) => b.score - a.score);
+
+            // Build results HTML
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">🔍</div>
+                        <p>No results found for "<strong>${query}</strong>"</p>
+                        <p>Try different keywords like "attack", "troops", "cards", "missile"</p>
+                    </div>
+                `;
+            } else {
+                resultsContainer.innerHTML = results.map(item => `
+                    <div class="search-result-item" onclick="navigateToResult('${item.section}', '${item.title.replace(/'/g, "\\'")}')">
+                        <div class="search-result-section">${item.sectionLabel}</div>
+                        <div class="search-result-title">${highlightText(item.title, query)}</div>
+                        <div class="search-result-excerpt">${getExcerpt(item.content, query)}</div>
+                    </div>
+                `).join('');
+            }
+
+            countDisplay.textContent = `${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"`;
+            overlay.classList.add('active');
+        }
+
+        // Navigate to result
+        function navigateToResult(sectionId, cardTitle) {
+            closeSearch();
+
+            // Switch to section
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelector(`.nav-tab[data-section="${sectionId}"]`).classList.add('active');
+
+            // Find and expand card
+            const card = [...document.querySelectorAll('.card')].find(c =>
+                c.dataset.title === cardTitle || c.querySelector('h3')?.textContent === cardTitle
+            );
+
+            if (card) {
+                card.classList.add('expanded');
+                setTimeout(() => {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
+        // Close search overlay
+        function closeSearch() {
+            document.getElementById('searchOverlay').classList.remove('active');
+            document.getElementById('search').value = '';
+        }
+
+        // Tab navigation
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.section).classList.add('active');
+            });
+        });
+
+        // Card expansion
+        document.querySelectorAll('.card-header').forEach(header => {
+            header.addEventListener('click', () => {
+                header.parentElement.classList.toggle('expanded');
+            });
+        });
+
+        // Detail toggles
+        document.querySelectorAll('.detail-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggle.classList.toggle('open');
+                const detail = toggle.nextElementSibling;
+                if (detail && detail.classList.contains('more-detail')) {
+                    detail.classList.toggle('visible');
+                }
+            });
+        });
+
+        // Search input
+        let searchTimeout;
+        document.getElementById('search').addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                performSearch(e.target.value.trim());
+            }, 200);
+        });
+
+        // Close search on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSearch();
+                document.getElementById('quickRefModal').classList.remove('visible');
+            }
+        });
+
+        // Game number selector
+        document.getElementById('gameNumber').addEventListener('change', (e) => {
+            const gameNum = parseInt(e.target.value);
+            const firstGameSetup = document.getElementById('first-game-setup');
+            if (firstGameSetup) {
+                firstGameSetup.style.display = gameNum > 1 ? 'none' : '';
+            }
+        });
+
+        // Quick reference modal
+        function toggleModal() {
+            document.getElementById('quickRefModal').classList.toggle('visible');
+        }
+
+        // Close modal on outside click
+        document.getElementById('quickRefModal').addEventListener('click', (e) => {
+            if (e.target.id === 'quickRefModal') {
+                toggleModal();
+            }
+        });
+
+        document.getElementById('searchOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'searchOverlay') {
+                closeSearch();
+            }
+        });
+    </script>
+</body>
+</html>
